@@ -1,6 +1,11 @@
 package oop.ryhmatoo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+
+import static oop.ryhmatoo.CSVLuger.loeCSV;
 
 public class Main {
     public void looKasutaja(){
@@ -18,6 +23,7 @@ public class Main {
         //Isik isik = new Isik(isiskukood, eesnimi, perekonnanimi, sissetulek, tagastatudList);
     }
     public static void main(String[] args) {
-
+        ArrayList<Ülekanne> ülekanded = new ArrayList<> (loeCSV("C:\\Users\\August\\IdeaProjects\\statement.csv"));
+        System.out.println(ülekanded);
     }
 }
