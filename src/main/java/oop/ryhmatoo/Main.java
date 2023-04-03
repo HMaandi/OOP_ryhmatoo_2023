@@ -8,6 +8,7 @@ import java.util.Scanner;
 import static oop.ryhmatoo.CSVLuger.loeCSV;
 
 public class Main {
+    private List<Isik> isikud = new ArrayList<>();
     public void looKasutaja(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Sisestage isikukood: ");
@@ -19,8 +20,19 @@ public class Main {
         System.out.println("Sisestage igakuine sissetulek: ");
         Double sissetulek = Double.parseDouble(sc.nextLine());
         //tekib võimalus lisada csv fail
-        //loeCSV, mis tagastab List<Ülekanne>
-        //Isik isik = new Isik(isiskukood, eesnimi, perekonnanimi, sissetulek, tagastatudList);
+        //NB! Leida võimalus et saaks faili sisse tõsta või läbi file exploreri leida see
+        while(true) {
+            System.out.println("Sisestage failitee Teie pangakonto väljavõtte CSV failile: ");
+            String failitee = sc.nextLine();
+            ArrayList<Ülekanne> ülekanded = new ArrayList<>(loeCSV(failitee));
+            if(ülekanded.isEmpty()){
+                System.out.println("Tekkis viga. Kontrollige et tegemist on õige failiga ja õige failiteega.");
+                continue;
+            }
+            isikud.add(new Isik(isikukood, eesnimi, perekonnanimi, sissetulek, ülekanded));
+            System.out.println("Kasutaja " + isikud.get(isikud.size()-1).toString() + " lisatud");
+            break;
+        }
     }
     public static void main(String[] args) {
         ArrayList<Ülekanne> ülekanded = new ArrayList<> (loeCSV("C:\\Users\\August\\IdeaProjects\\statement.csv"));

@@ -9,4 +9,29 @@ public class Isik {
     private Double sissetulek;
     private List<Ülekanne> ülekanded;
 
+    public Isik(int isikukood, String eesnimi, String perekonnanimi, Double sissetulek, List<Ülekanne> ülekanded) {
+        this.isikukood = isikukood;
+        this.eesnimi = eesnimi;
+        this.perekonnanimi = perekonnanimi;
+        this.sissetulek = sissetulek;
+        this.ülekanded = ülekanded;
+    }
+
+    @Override
+    public String toString() {
+        return "isikukood=" + isikukood +
+                ", eesnimi='" + eesnimi + '\'' +
+                ", perekonnanimi='" + perekonnanimi + '\'' +
+                '}';
+    }
+
+    public double arvutaTulemus(){
+        double kuuKulud = 0;
+        for (Ülekanne ük: ülekanded) {
+            if(ük.getOnVäljaminek()){
+                kuuKulud += ük.getSumma();
+            }
+        }
+        return Math.round(10*(sissetulek / kuuKulud));
+    }
 }

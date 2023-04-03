@@ -13,6 +13,14 @@ public class Ülekanne {
         this.onVäljaminek = onVäljaminek;
     }
 
+    public Double getSumma() {
+        return summa;
+    }
+
+    public Boolean getOnVäljaminek() {
+        return onVäljaminek;
+    }
+
     @Override
     public String toString() {
         return "Ülekanne{" +
