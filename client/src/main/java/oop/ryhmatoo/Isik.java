@@ -17,6 +17,18 @@ public class Isik {
         this.ülekanded = ülekanded;
     }
 
+    public int getIsikukood() {
+        return isikukood;
+    }
+
+    public String getEesnimi() {
+        return eesnimi;
+    }
+
+    public String getPerekonnanimi() {
+        return perekonnanimi;
+    }
+
     @Override
     public String toString() {
         return "isikukood=" + isikukood +
