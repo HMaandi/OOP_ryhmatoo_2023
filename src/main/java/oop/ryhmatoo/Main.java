@@ -35,7 +35,5 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        ArrayList<Ülekanne> ülekanded = new ArrayList<> (loeCSV("C:\\Users\\August\\IdeaProjects\\statement.csv"));
-        System.out.println(ülekanded);
     }
 }
