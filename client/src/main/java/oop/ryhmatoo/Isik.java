@@ -6,13 +6,15 @@ public class Isik {
     private int isikukood;
     private String eesnimi;
     private String perekonnanimi;
+    private String meiliAadress;
     private Double sissetulek;
     private List<Ülekanne> ülekanded;
 
-    public Isik(int isikukood, String eesnimi, String perekonnanimi, Double sissetulek, List<Ülekanne> ülekanded) {
+    public Isik(int isikukood, String eesnimi, String perekonnanimi, String meiliAadress, Double sissetulek, List<Ülekanne> ülekanded) {
         this.isikukood = isikukood;
         this.eesnimi = eesnimi;
         this.perekonnanimi = perekonnanimi;
+        this.meiliAadress = meiliAadress;
         this.sissetulek = sissetulek;
         this.ülekanded = ülekanded;
     }
