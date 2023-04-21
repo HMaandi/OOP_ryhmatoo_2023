@@ -17,7 +17,7 @@ public class App {
     public static final int TYPE_GET_LEADERBOARD = 2;
     public static final int TYPE_OK = 3;
     public static final int TYPE_ERROR = 4;
-    private static int port = 1337;
+    private static final int port = 1337;
 
     public static void saadaIsik(Isik isik) throws IOException {
         System.out.println("ühendan serveriga");
@@ -31,6 +31,7 @@ public class App {
                 out.writeInt(isik.getIsikukood());
                 out.writeUTF(isik.getEesnimi() + " " + isik.getPerekonnanimi());
                 out.writeDouble(isik.arvutaTulemus());
+                out.writeUTF(isik.getMeiliAadress());
                 if (in.readInt() == TYPE_OK) {
                     System.out.println("Isiku andmed on edukalt salvestatud serverisse");
                 } else {
@@ -64,29 +65,24 @@ public class App {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileFilter(new FileNameExtensionFilter("CSV", ".csv"));
         int tulemus = jfc.showOpenDialog(null);
-        if(tulemus == jfc.APPROVE_OPTION){
+        if(tulemus == JFileChooser.APPROVE_OPTION){
             return jfc.getSelectedFile().getAbsolutePath();
         }
         return null;
     }
     public static void looKasutaja() throws IOException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Sisestage isikukood: ");
-        int isikukood = Integer.parseInt(sc.nextLine());
-        System.out.println("Sisestage eesnimi: ");
-        String eesnimi = sc.nextLine();
-        System.out.println("Sisestage perekonnanimi: ");
-        String perekonnanimi = sc.nextLine();
+        System.out.println("Valige pangakonto väljavõtte .csv fail.");
+        String failitee = valiFail();
+        CSVLuger csvLuger = new CSVLuger();
+        List<Ülekanne> ülekanded = csvLuger.loeCSV(valiFail());
         System.out.println("Sisestage oma e-posti aadress: ");
         String meil = sc.nextLine();
         System.out.println("Sisestage igakuine sissetulek: ");
         Double sissetulek = Double.parseDouble(sc.nextLine());
-        System.out.println("Valige pangakonto väljavõtte .csv fail.");
-        String failitee = valiFail();
-        List<Ülekanne> ülekanded = loeCSV(valiFail());
-        Isik uusIsik = new Isik(isikukood, eesnimi, perekonnanimi, meil, sissetulek, ülekanded);
+        Isik uusIsik = new Isik(csvLuger.getIsikukood(), csvLuger.getEesnimi(), csvLuger.getPerenimi(), meil, sissetulek, ülekanded);
         saadaIsik(uusIsik);
-        System.out.println("Kasutaja " + uusIsik.toString() + " lisatud");
+        System.out.println("Kasutaja " + uusIsik + " lisatud");
         }
     public static void main(String[] args) throws IOException{
         Scanner sc = new Scanner(System.in);

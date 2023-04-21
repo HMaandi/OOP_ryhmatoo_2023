@@ -11,6 +11,23 @@ import java.util.stream.Collectors;
 
 public class CSVLuger {
 
+    private int isikukood;
+    private String eesnimi;
+    private String perenimi;
+
+    public int getIsikukood() {
+        return isikukood;
+    }
+
+    public String getEesnimi() {
+        return eesnimi;
+    }
+
+    public String getPerenimi() {
+        return perenimi;
+    }
+
+
     public static List<Ülekanne> loeCSV(String failiNimi) {
         ArrayList<Ülekanne> CSVSisu = new ArrayList<>();
 

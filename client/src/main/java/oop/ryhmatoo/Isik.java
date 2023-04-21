@@ -19,6 +19,10 @@ public class Isik {
         this.ülekanded = ülekanded;
     }
 
+    public String getMeiliAadress() {
+        return meiliAadress;
+    }
+
     public int getIsikukood() {
         return isikukood;
     }
