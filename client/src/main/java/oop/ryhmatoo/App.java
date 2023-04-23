@@ -72,6 +72,12 @@ public class App {
     }
     public static void looKasutaja() throws IOException {
         Scanner sc = new Scanner(System.in);
+        System.out.println("Sisestage oma isikukood: ");
+        int isikukood = sc.nextInt();
+        System.out.println("Sisestage oma eesnimi: ");
+        String eesnimi = sc.nextLine();
+        System.out.println("Sisestage oma perekonnanimi: ");
+        String perenimi = sc.nextLine();
         System.out.println("Valige pangakonto väljavõtte .csv fail.");
         String failitee = valiFail();
         CSVLuger csvLuger = new CSVLuger();
@@ -80,7 +86,7 @@ public class App {
         String meil = sc.nextLine();
         System.out.println("Sisestage igakuine sissetulek: ");
         Double sissetulek = Double.parseDouble(sc.nextLine());
-        Isik uusIsik = new Isik(csvLuger.getIsikukood(), csvLuger.getEesnimi(), csvLuger.getPerenimi(), meil, sissetulek, ülekanded);
+        Isik uusIsik = new Isik(isikukood, eesnimi, perenimi, meil, sissetulek, ülekanded);
         saadaIsik(uusIsik);
         System.out.println("Kasutaja " + uusIsik + " lisatud");
         }
