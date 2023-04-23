@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +15,11 @@ import java.util.List;
 public class RequestHandler implements Runnable{
 
     final Socket client;
+    final Connection connection;
     final String tulemusteFail = "server" + File.separatorChar + "src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar + "tulemused.txt";
 
-    RequestHandler(Socket client) {
+    RequestHandler(Socket client, Connection connection) {
+        this.connection = connection;
         this.client = client;
     }
 
@@ -25,21 +31,27 @@ public class RequestHandler implements Runnable{
                                     Double.parseDouble(split[2]));
         return sissekanne;
     }
-    private List<Sissekanne> loeSissekanded(String fail) throws IOException {
-        return new ArrayList<>(Files.readAllLines(Path.of(fail))
-                .stream()
-                .map(RequestHandler::ridaSissekandeks)
-                .toList());
+    private List<Sissekanne> loeSissekanded(Connection conn) throws IOException, SQLException {
+        List<Sissekanne> sissekanded = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM tulemused ORDER BY tulemus DESC");
+        try (ResultSet resultSet = ps.executeQuery()) {
+            while (resultSet.next()) {
+                String isikukood = resultSet.getString("isikukood");
+                String nimi = resultSet.getString("nimi");
+                double tulemus = resultSet.getDouble("tulemus");
+                sissekanded.add(new Sissekanne(isikukood, nimi, tulemus));
+            }
+        }
+        return sissekanded;
     }
-     synchronized private void salvestaTulemus(DataInputStream in, DataOutputStream out) throws IOException {
+     synchronized private void salvestaTulemus(DataInputStream in, DataOutputStream out, Connection conn) throws IOException, SQLException {
         boolean onUus = true;
-        File fail = new File(tulemusteFail);
         List<Sissekanne> sissekanded = new ArrayList<>();
         try {
-            sissekanded = loeSissekanded(tulemusteFail);
+            sissekanded = loeSissekanded(conn);
+            out.writeInt(App.TYPE_OK);
         }
         catch (Exception e) {
-
             out.writeInt(App.TYPE_ERROR);
         }
         String isikukood = in.readUTF();
@@ -52,23 +64,24 @@ public class RequestHandler implements Runnable{
             }
         }
         if (onUus) {
-            sissekanded.add(new Sissekanne(isikukood, nimi, tulemus));
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO tulemused (isikukood, nimi, tulemus) VALUES (?, ?, ?)");
+            ps.setString(1, isikukood);
+            ps.setString(2, nimi);
+            ps.setDouble(3, tulemus);
+            ps.executeUpdate();
         }
-        Collections.sort(sissekanded);
-        try (   FileWriter fw = new FileWriter(fail);
-                BufferedWriter bw = new BufferedWriter(fw)
-                ) {
-            for (Sissekanne s: sissekanded) {
-                bw.write(s.getIsikukood() + "|" + s.getNimi() + "|" + s.getTulemus());
-                bw.newLine();
-            }
-            out.writeInt(App.TYPE_OK);
+        else {
+            PreparedStatement ps = conn.prepareStatement("UPDATE tulemused SET tulemus = ? WHERE isikukood = ?");
+            ps.setDouble(1, tulemus);
+            ps.setString(2, isikukood);
+            ps.executeUpdate();
         }
-    }
-    private void saadaEdeTabel(DataOutputStream out) throws IOException {
+
+        }
+    private void saadaEdeTabel(DataOutputStream out, Connection conn) throws IOException {
         List<Sissekanne> sissekanded = new ArrayList<>();
         try {
-            sissekanded = loeSissekanded(tulemusteFail);
+            sissekanded = loeSissekanded(conn);
         }
         catch (Exception e) {
             out.writeInt(App.TYPE_ERROR);
@@ -90,9 +103,9 @@ public class RequestHandler implements Runnable{
             System.out.println("Client connected");
             int request = dataIn.readInt();
             if (request == App.TYPE_UPLOAD) {
-                salvestaTulemus(dataIn, dataOut);
+                salvestaTulemus(dataIn, dataOut, connection);
             } else if (request == App.TYPE_GET_LEADERBOARD) {
-                saadaEdeTabel(dataOut);
+                saadaEdeTabel(dataOut, connection);
             } else {
                 dataOut.writeInt(App.TYPE_ERROR);
             }
