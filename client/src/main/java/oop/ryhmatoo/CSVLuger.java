@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,6 @@ public class CSVLuger {
                 String[] sisu = rida.split(";");
                 switch (sisu[1]) {
                     case "10", "82", "86", "Reatüüp":
-                        System.out.println(Arrays.toString(sisu));
                         break;
 
                     case "20":

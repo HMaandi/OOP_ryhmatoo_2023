@@ -19,6 +19,7 @@ public class Isik {
         this.ülekanded = ülekanded;
     }
 
+
     public String getMeiliAadress() {
         return meiliAadress;
     }
@@ -29,6 +30,7 @@ public class Isik {
 
     public String getEesnimi() {
         return eesnimi;
+
     }
 
     public String getPerekonnanimi() {
@@ -51,5 +53,33 @@ public class Isik {
             }
         }
         return Math.round(10*(sissetulek / kuuKulud));
+    }
+    public double arvutaKokkuVäljaminekud() {
+        double summa = 0;
+        for (Ülekanne ülekanne : ülekanded) {
+            if (ülekanne.getOnVäljaminek()) {
+                summa += ülekanne.getSumma();
+            }
+        }
+        return summa;
+    }
+    public double arvutaKokkuSissetulekud() {
+        double summa = 0;
+        for (Ülekanne ülekanne : ülekanded) {
+            if (!ülekanne.getOnVäljaminek()) {
+                summa += ülekanne.getSumma();
+            }
+        }
+        return summa;
+    }
+    public Ülekanne arvutaSuurimVäljaminek() {
+        if (ülekanded.size() == 0) {return null;}
+        Ülekanne suurim = ülekanded.get(0);
+        for (Ülekanne ülekanne : ülekanded) {
+            if (ülekanne.getSumma() > suurim.getSumma() && ülekanne.getOnVäljaminek()) {
+                suurim = ülekanne;
+            }
+        }
+        return suurim;
     }
 }
