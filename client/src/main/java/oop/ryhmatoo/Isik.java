@@ -3,19 +3,17 @@ package oop.ryhmatoo;
 import java.util.List;
 
 public class Isik {
-    private int isikukood;
+    private String isikukood;
     private String eesnimi;
     private String perekonnanimi;
     private String meiliAadress;
-    private Double sissetulek;
     private List<Ülekanne> ülekanded;
 
-    public Isik(int isikukood, String eesnimi, String perekonnanimi, String meiliAadress, Double sissetulek, List<Ülekanne> ülekanded) {
+    public Isik(String isikukood, String eesnimi, String perekonnanimi, String meiliAadress, List<Ülekanne> ülekanded) {
         this.isikukood = isikukood;
         this.eesnimi = eesnimi;
         this.perekonnanimi = perekonnanimi;
         this.meiliAadress = meiliAadress;
-        this.sissetulek = sissetulek;
         this.ülekanded = ülekanded;
     }
 
@@ -24,7 +22,7 @@ public class Isik {
         return meiliAadress;
     }
 
-    public int getIsikukood() {
+    public String getIsikukood() {
         return isikukood;
     }
 
@@ -46,13 +44,14 @@ public class Isik {
     }
 
     public double arvutaTulemus(){
+        double sissetulek = arvutaKokkuSissetulekud();
         double kuuKulud = 0;
         for (Ülekanne ük: ülekanded) {
             if(ük.getOnVäljaminek()){
                 kuuKulud += ük.getSumma();
             }
         }
-        return Math.round(10*(sissetulek / kuuKulud));
+        return Math.round(10*( sissetulek/ kuuKulud));
     }
     public double arvutaKokkuVäljaminekud() {
         double summa = 0;
@@ -72,7 +71,7 @@ public class Isik {
         }
         return summa;
     }
-    public Ülekanne arvutaSuurimVäljaminek() {
+    public String arvutaSuurimVäljaminek() {
         if (ülekanded.size() == 0) {return null;}
         Ülekanne suurim = ülekanded.get(0);
         for (Ülekanne ülekanne : ülekanded) {
@@ -80,6 +79,11 @@ public class Isik {
                 suurim = ülekanne;
             }
         }
-        return suurim;
+        return suurim.getTeineOsapool() + " - " + suurim.getSumma() + "€";
+    }
+
+    public String arvutaSuurimVäljaminekuSumma(){
+        //
+        return "test";
     }
 }

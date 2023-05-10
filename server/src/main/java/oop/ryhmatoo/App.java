@@ -15,6 +15,8 @@ public class App
     public static final int TYPE_GET_LEADERBOARD = 2;
     public static final int TYPE_OK = 3;
     public static final int TYPE_ERROR = 4;
+    public static final int TYPE_GET_BIGGEST_SINGLE_PURCHASE = 5;
+    public static final int TYPE_GET_BIGGEST_OVERALL_SPENDING = 6;
     public static void main( String[] args ) throws Exception {
 
         try (Connection connection = connectToDb()) {

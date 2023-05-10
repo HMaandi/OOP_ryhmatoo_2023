@@ -13,6 +13,8 @@ public class Ülekanne {
         this.onVäljaminek = onVäljaminek;
     }
 
+    public String getTeineOsapool() {return teineOsapool;}
+
     public Double getSumma() {
         return summa;
     }
