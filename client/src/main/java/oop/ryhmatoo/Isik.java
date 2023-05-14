@@ -1,6 +1,9 @@
 package oop.ryhmatoo;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class Isik {
     private String isikukood;
@@ -28,7 +31,6 @@ public class Isik {
 
     public String getEesnimi() {
         return eesnimi;
-
     }
 
     public String getPerekonnanimi() {
@@ -83,7 +85,25 @@ public class Isik {
     }
 
     public String arvutaSuurimVäljaminekuSumma(){
-        //
-        return "test";
+        Map<String, Double> väljaminekuteSihtkohad = new HashMap<>();
+        String maxVõti = "";
+        double maxVäärtus = 0.0;
+        for (Ülekanne ülekanne : ülekanded) {
+            if (ülekanne.getOnVäljaminek()) {
+                if (väljaminekuteSihtkohad.containsKey(ülekanne.getTeineOsapool())) {
+                    väljaminekuteSihtkohad.replace(ülekanne.getTeineOsapool(),
+                            ülekanne.getSumma() + väljaminekuteSihtkohad.get(ülekanne.getTeineOsapool()));
+                    if (maxVäärtus < ülekanne.getSumma() + väljaminekuteSihtkohad.get(ülekanne.getTeineOsapool())){
+                        maxVõti = ülekanne.getTeineOsapool();
+                        maxVäärtus = ülekanne.getSumma() + väljaminekuteSihtkohad.get(ülekanne.getTeineOsapool());
+                    }
+                } else {väljaminekuteSihtkohad.put(ülekanne.getTeineOsapool(),ülekanne.getSumma());
+                    if (maxVäärtus < ülekanne.getSumma()){
+                        maxVõti = ülekanne.getTeineOsapool();
+                        maxVäärtus = ülekanne.getSumma();
+                    }}
+            }
+        }
+        return maxVõti + " " +maxVäärtus;
     }
 }
