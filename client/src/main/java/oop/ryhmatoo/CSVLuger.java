@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
+    import java.util.List;
 import java.util.stream.Collectors;
 
 public class CSVLuger {
@@ -26,6 +26,12 @@ public class CSVLuger {
                         break;
 
                     case "20":
+                        //Vaatab kas tegemist on rahakoguja tehinguga, kuna see kasutajat ei mõjuta siis see ignoreeritakse
+                        boolean onRahakogujaTehing =
+                                sisu[4].equals("Kaardimaksete abil Rahakogujasse kogutud summa:")
+                                || sisu[4].equals("Väljamakse Rahakogujast kontole EE672200221046975169");
+                        if (onRahakogujaTehing) {break;}
+
                         //Vaatab kas tegemist on kulutusega(K) või mittekulutusega(MK)
                         boolean onVäljaminek = !sisu[9].equals("MK");
                         //Eemaldab liigsed tühikud
@@ -42,4 +48,5 @@ public class CSVLuger {
         }
         return CSVSisu.stream().toList();
     }
+
 }
