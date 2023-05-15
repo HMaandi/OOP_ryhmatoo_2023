@@ -76,6 +76,7 @@ public class RequestHandler implements Runnable{
             ps.setString(2, isikukood);
             ps.executeUpdate();
         }
+        out.writeInt(App.TYPE_OK);
 
         }
     private void saadaEdeTabel(DataOutputStream out, Connection conn) throws IOException {

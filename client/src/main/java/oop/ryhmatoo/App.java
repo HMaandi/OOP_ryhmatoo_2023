@@ -50,10 +50,10 @@ public class App {
             } else {
                 out.writeUTF(isik.getIsikukood());
                 out.writeUTF(isik.getEesnimi() + " " + isik.getPerekonnanimi());
-                out.writeDouble(isik.arvutaTulemus());
                 out.writeUTF(isik.getMeiliAadress());
+                out.writeDouble(isik.arvutaTulemus());
                 out.flush();
-                if (in.read() == TYPE_OK) {
+                if (in.readInt() == TYPE_OK) {
                     System.out.println("Isiku andmed on edukalt salvestatud serverisse");
                 } else {
                     System.out.println("Serveril tekkis viga andmete salvestamisega");
@@ -72,7 +72,7 @@ public class App {
                 int ridadeArv = in.readInt();
                 for (int i = 1; i <= ridadeArv; i++) {
                     String nimi = in.readUTF();
-                    String tulemus = in.readUTF();
+                    double tulemus = in.readDouble();
                     System.out.println(i + ". " + nimi + ": " + tulemus);
                 }
             }
@@ -101,7 +101,7 @@ public class App {
         System.out.println("Valige pangakonto väljavõtte .csv fail.");
         String failitee = valiFail();
         CSVLuger csvLuger = new CSVLuger();
-        List<Ülekanne> ülekanded = csvLuger.loeCSV(valiFail());
+        List<Ülekanne> ülekanded = csvLuger.loeCSV(failitee);
         System.out.println("Sisestage oma e-posti aadress: ");
         String meil = sc.nextLine();
         Isik uusIsik = new Isik(isikukood, eesnimi, perenimi, meil, ülekanded);
