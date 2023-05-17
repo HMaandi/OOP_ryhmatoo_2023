@@ -18,13 +18,17 @@ public class App {
     public static final int TYPE_OK = 3;
     public static final int TYPE_ERROR = 4;
     private static final int port = 1337;
+
+    private static Isik vaadeldavIsik;
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         boolean programmKäib = true;
         while (programmKäib) {
             System.out.println("1 - Loo uus kasutaja");
             System.out.println("2 - Kuva edetabel");
-            System.out.println("3 - Sulge programm");
+            System.out.println("3 - Lisa loodud kasutaja edetabelisse");
+            System.out.println("4 - Kuva statistika kulutuste kohta");
+            System.out.println("5 - Sulge programm");
             int valik = sc.nextInt();
             switch (valik) {
                 case 1:
@@ -33,7 +37,23 @@ public class App {
                 case 2:
                     küsiEdetabel();
                     break;
-                case 3:
+                    case 3:
+                        try {
+                            saadaIsik(vaadeldavIsik);
+                            System.out.println(vaadeldavIsik.toString() + " on lisatud serveri edetabelisse!");
+                        }
+                        catch (Exception e){
+                            System.out.println("CSV faili pole valitud. Loo esmalt kasutaja.");
+                        }
+                    break;
+                case 4:
+                    try {
+                        kuvaSuurimadKulutused(vaadeldavIsik);
+                    }catch (Exception e){
+                        System.out.println("CSV faili pole valitud. Loo esmalt kasutaja.");
+                    }
+                    break;
+                case 5:
                     programmKäib = false;
                     break;
             }
@@ -104,11 +124,8 @@ public class App {
         List<Ülekanne> ülekanded = csvLuger.loeCSV(failitee);
         System.out.println("Sisestage oma e-posti aadress: ");
         String meil = sc.nextLine();
-        Isik uusIsik = new Isik(isikukood, eesnimi, perenimi, meil, ülekanded);
-        saadaIsik(uusIsik);
-        System.out.println("Kasutaja " + uusIsik + " lisatud");
-        kuvaSuurimadKulutused(uusIsik);
-        sc.close();
+        vaadeldavIsik = new Isik(isikukood, eesnimi, perenimi, meil, ülekanded);
+        System.out.println("Kasutaja on loodud!");
         }
 public static void kuvaSuurimadKulutused(Isik isik){
         Scanner sc = new Scanner(System.in);
@@ -130,7 +147,6 @@ public static void kuvaSuurimadKulutused(Isik isik){
                     break;
             }
         }
-        sc.close();
     }
 }
 

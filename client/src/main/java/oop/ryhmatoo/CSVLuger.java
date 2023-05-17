@@ -33,7 +33,7 @@ public class CSVLuger {
                         if (onRahakogujaTehing) {break;}
 
                         //Vaatab kas tegemist on kulutusega(K) või mittekulutusega(MK)
-                        boolean onVäljaminek = !sisu[9].equals("MK");
+                        boolean onVäljaminek = sisu[9].equals("K");
                         //Eemaldab liigsed tühikud
                         String teineOsapool = sisu[3].trim().replaceAll(" +", " ");
                         //Muudab komakohaga arvu punktiga arvuks
