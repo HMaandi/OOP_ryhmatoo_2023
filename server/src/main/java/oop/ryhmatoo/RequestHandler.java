@@ -56,6 +56,7 @@ public class RequestHandler implements Runnable{
         }
         String isikukood = in.readUTF();
         String nimi = in.readUTF();
+        String meil = in.readUTF();
         double tulemus = in.readDouble();
         for (Sissekanne s : sissekanded) {
             if (s.getIsikukood().equals(isikukood)) {
